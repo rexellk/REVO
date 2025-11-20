@@ -1,0 +1,9 @@
+{
+  "name": "REVO Marketplace",
+  "description": "Mobile-first marketplace connecting car owners with verified independent mechanics for on-location maintenance.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
