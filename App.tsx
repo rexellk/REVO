@@ -1,96 +1,42 @@
-import React, { useState } from 'react';
-import { Home, Wrench, User, MessageSquare } from 'lucide-react';
-import { UserRole, Screen } from './types';
-import { DriverDashboard } from './components/DriverDashboard';
-import { MechanicDashboard } from './components/MechanicDashboard';
-import { AIChatBot } from './components/AIChatBot';
-import { ImageAnalyzer } from './components/ImageAnalyzer';
-import { MessagesScreen } from './components/MessagesScreen';
-import { BookingsScreen } from './components/BookingsScreen';
-import { ProfileScreen } from './components/ProfileScreen';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+  Platform,
+} from "react-native";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+import { UserRole, Screen } from "./src/types";
+import { DriverDashboard } from "./src/components/DriverDashboard";
+import { MechanicDashboard } from "./src/components/MechanicDashboard";
+import { AIChatBot } from "./src/components/AIChatBot";
+import { ImageAnalyzer } from "./src/components/ImageAnalyzer";
+import { MessagesScreen } from "./src/components/MessagesScreen";
+import { BookingsScreen } from "./src/components/BookingsScreen";
+import { ProfileScreen } from "./src/components/ProfileScreen";
+import { Icon } from "./src/components/SharedUI";
+import { COLORS } from "./src/theme";
 
-function App() {
-  // State for simulating routing and auth
+function AppContent() {
+  const insets = useSafeAreaInsets();
   const [userRole, setUserRole] = useState<UserRole>(UserRole.DRIVER);
-  const [currentScreen, setCurrentScreen] = useState<Screen>(Screen.DRIVER_HOME);
-  const [showImageAnalyzer, setShowImageAnalyzer] = useState(false);
-
-  // --- Layout Components ---
-  
-  const TabBar = () => {
-    const isActive = (screen: Screen) => currentScreen === screen;
-    const isHomeActive = currentScreen === Screen.DRIVER_HOME || currentScreen === Screen.MECHANIC_HOME;
-
-    return (
-      <nav className="absolute bottom-0 left-0 right-0 w-full bg-revo-cream border-t-2 border-revo-navy pb-safe pt-2 px-6 flex justify-between items-center z-40 h-20 shadow-lg">
-        <button 
-          onClick={() => {
-            setCurrentScreen(userRole === UserRole.DRIVER ? Screen.DRIVER_HOME : Screen.MECHANIC_HOME);
-          }}
-          className={`flex flex-col items-center gap-1 w-16 transition-colors duration-200 ${
-            isHomeActive ? 'text-revo-red' : 'text-revo-navy/60 hover:text-revo-navy'
-          }`}
-        >
-          <Home size={24} strokeWidth={isHomeActive ? 3 : 2} />
-          <span className="text-[10px] font-bold uppercase tracking-wide">Home</span>
-        </button>
-
-        <button 
-          onClick={() => setCurrentScreen(Screen.MESSAGES)}
-          className={`flex flex-col items-center gap-1 w-16 transition-colors duration-200 ${
-            isActive(Screen.MESSAGES) ? 'text-revo-red' : 'text-revo-navy/60 hover:text-revo-navy'
-          }`}
-        >
-          <MessageSquare size={24} strokeWidth={isActive(Screen.MESSAGES) ? 3 : 2} />
-          <span className="text-[10px] font-bold uppercase tracking-wide">Messages</span>
-        </button>
-
-        <button 
-          onClick={() => setCurrentScreen(Screen.BOOKINGS)}
-          className={`flex flex-col items-center gap-1 w-16 transition-colors duration-200 ${
-            isActive(Screen.BOOKINGS) ? 'text-revo-red' : 'text-revo-navy/60 hover:text-revo-navy'
-          }`}
-        >
-          <Wrench size={24} strokeWidth={isActive(Screen.BOOKINGS) ? 3 : 2} />
-          <span className="text-[10px] font-bold uppercase tracking-wide">Bookings</span>
-        </button>
-
-        <button 
-          onClick={() => setCurrentScreen(Screen.PROFILE)}
-          className={`flex flex-col items-center gap-1 w-16 transition-colors duration-200 ${
-            isActive(Screen.PROFILE) ? 'text-revo-red' : 'text-revo-navy/60 hover:text-revo-navy'
-          }`}
-        >
-          <User size={24} strokeWidth={isActive(Screen.PROFILE) ? 3 : 2} />
-          <span className="text-[10px] font-bold uppercase tracking-wide">Profile</span>
-        </button>
-      </nav>
-    );
-  };
-
-  // --- Role Switcher (For Demo Purposes) ---
-  const DemoRoleSwitcher = () => (
-    <div className="fixed top-4 right-4 z-50 opacity-20 hover:opacity-100 transition-opacity">
-      <button 
-        onClick={() => {
-          const newRole = userRole === UserRole.DRIVER ? UserRole.MECHANIC : UserRole.DRIVER;
-          setUserRole(newRole);
-          // Reset to home screen of new role to avoid confusion
-          setCurrentScreen(newRole === UserRole.DRIVER ? Screen.DRIVER_HOME : Screen.MECHANIC_HOME);
-        }}
-        className="bg-revo-navy text-revo-cream text-xs px-3 py-1 rounded-full shadow-xl font-bold border border-revo-cream"
-      >
-        Switch to {userRole === UserRole.DRIVER ? 'Mechanic' : 'Driver'}
-      </button>
-    </div>
+  const [currentScreen, setCurrentScreen] = useState<Screen>(
+    Screen.DRIVER_HOME
   );
-
-  // --- Main Render Logic ---
+  const [showImageAnalyzer, setShowImageAnalyzer] = useState(false);
 
   const renderScreen = () => {
     switch (currentScreen) {
       case Screen.DRIVER_HOME:
-        return <DriverDashboard onAnalyzeImage={() => setShowImageAnalyzer(true)} />;
+        return (
+          <DriverDashboard onAnalyzeImage={() => setShowImageAnalyzer(true)} />
+        );
       case Screen.MECHANIC_HOME:
         return <MechanicDashboard />;
       case Screen.MESSAGES:
@@ -100,38 +46,237 @@ function App() {
       case Screen.PROFILE:
         return <ProfileScreen role={userRole} />;
       default:
-        return <DriverDashboard onAnalyzeImage={() => setShowImageAnalyzer(true)} />;
+        return (
+          <DriverDashboard onAnalyzeImage={() => setShowImageAnalyzer(true)} />
+        );
     }
   };
 
+  const TabBar = () => {
+    const isActive = (screen: Screen) => currentScreen === screen;
+    const isHomeActive =
+      currentScreen === Screen.DRIVER_HOME ||
+      currentScreen === Screen.MECHANIC_HOME;
+
+    return (
+      <View
+        style={[
+          styles.tabBar,
+          { paddingBottom: insets.bottom > 0 ? insets.bottom : 16 },
+        ]}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            setCurrentScreen(
+              userRole === UserRole.DRIVER
+                ? Screen.DRIVER_HOME
+                : Screen.MECHANIC_HOME
+            );
+          }}
+          style={styles.tabItem}
+        >
+          <Icon
+            name="Home"
+            size={24}
+            color={isHomeActive ? COLORS.revo.red : COLORS.revo.navy + "99"}
+            style={{ marginBottom: 4 }}
+          />
+          <Text
+            style={[
+              styles.tabLabel,
+              {
+                color: isHomeActive ? COLORS.revo.red : COLORS.revo.navy + "99",
+              },
+            ]}
+          >
+            Home
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setCurrentScreen(Screen.MESSAGES)}
+          style={styles.tabItem}
+        >
+          <Icon
+            name="MessageSquare"
+            size={24}
+            color={
+              isActive(Screen.MESSAGES)
+                ? COLORS.revo.red
+                : COLORS.revo.navy + "99"
+            }
+            style={{ marginBottom: 4 }}
+          />
+          <Text
+            style={[
+              styles.tabLabel,
+              {
+                color: isActive(Screen.MESSAGES)
+                  ? COLORS.revo.red
+                  : COLORS.revo.navy + "99",
+              },
+            ]}
+          >
+            Messages
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setCurrentScreen(Screen.BOOKINGS)}
+          style={styles.tabItem}
+        >
+          <Icon
+            name="Wrench"
+            size={24}
+            color={
+              isActive(Screen.BOOKINGS)
+                ? COLORS.revo.red
+                : COLORS.revo.navy + "99"
+            }
+            style={{ marginBottom: 4 }}
+          />
+          <Text
+            style={[
+              styles.tabLabel,
+              {
+                color: isActive(Screen.BOOKINGS)
+                  ? COLORS.revo.red
+                  : COLORS.revo.navy + "99",
+              },
+            ]}
+          >
+            Bookings
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setCurrentScreen(Screen.PROFILE)}
+          style={styles.tabItem}
+        >
+          <Icon
+            name="User"
+            size={24}
+            color={
+              isActive(Screen.PROFILE)
+                ? COLORS.revo.red
+                : COLORS.revo.navy + "99"
+            }
+            style={{ marginBottom: 4 }}
+          />
+          <Text
+            style={[
+              styles.tabLabel,
+              {
+                color: isActive(Screen.PROFILE)
+                  ? COLORS.revo.red
+                  : COLORS.revo.navy + "99",
+              },
+            ]}
+          >
+            Profile
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const DemoRoleSwitcher = () => (
+    <TouchableOpacity
+      onPress={() => {
+        const newRole =
+          userRole === UserRole.DRIVER ? UserRole.MECHANIC : UserRole.DRIVER;
+        setUserRole(newRole);
+        setCurrentScreen(
+          newRole === UserRole.DRIVER
+            ? Screen.DRIVER_HOME
+            : Screen.MECHANIC_HOME
+        );
+      }}
+      style={[styles.roleSwitcher, { top: insets.top + 8 }]}
+    >
+      <Text style={styles.roleSwitcherText}>
+        Switch to {userRole === UserRole.DRIVER ? "Mechanic" : "Driver"}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
-    <div className="h-screen w-screen bg-revo-cream flex justify-center items-center overflow-hidden font-sans text-revo-navy">
-      
-      {/* Demo Tool */}
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.revo.cream} />
+
+      {/* Main Content */}
+      <View style={{ flex: 1, paddingTop: insets.top }}>{renderScreen()}</View>
+
+      {/* Navigation */}
+      <TabBar />
+
+      {/* Floating Elements */}
       <DemoRoleSwitcher />
+      <AIChatBot />
 
-      {/* Mobile App Container */}
-      <main className="w-full max-w-md h-full md:h-[850px] md:max-h-screen bg-revo-cream relative shadow-2xl overflow-hidden flex flex-col md:rounded-3xl md:border-8 md:border-revo-navy/10">
-        
-        {/* Scrollable Content Area */}
-        <div className="flex-1 overflow-y-auto scrollbar-hide relative bg-revo-cream">
-          {renderScreen()}
-        </div>
-
-        {/* Navigation */}
-        <TabBar />
-
-        {/* Feature: AI Chatbot (Global) */}
-        <AIChatBot />
-
-        {/* Feature: Image Analyzer Modal */}
-        {showImageAnalyzer && (
-          <ImageAnalyzer onClose={() => setShowImageAnalyzer(false)} />
-        )}
-
-      </main>
-    </div>
+      {/* Modals */}
+      {showImageAnalyzer && (
+        <ImageAnalyzer onClose={() => setShowImageAnalyzer(false)} />
+      )}
+    </View>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <AppContent />
+    </SafeAreaProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.revo.cream,
+  },
+  tabBar: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: COLORS.revo.cream,
+    borderTopWidth: 2,
+    borderTopColor: COLORS.revo.navy,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingTop: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 10,
+  },
+  tabItem: {
+    alignItems: "center",
+    width: 64,
+  },
+  tabLabel: {
+    fontSize: 10,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  roleSwitcher: {
+    position: "absolute",
+    right: 16,
+    backgroundColor: COLORS.revo.navy,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    opacity: 0.8,
+    zIndex: 100,
+    borderWidth: 1,
+    borderColor: COLORS.revo.cream,
+  },
+  roleSwitcherText: {
+    color: COLORS.revo.cream,
+    fontSize: 10,
+    fontWeight: "bold",
+  },
+});
