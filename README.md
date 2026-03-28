@@ -1,50 +1,56 @@
-# Welcome to your Expo app 👋
+# REVO: Uber for Mechanics
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**REVO** is an early-stage proof-of-concept for a two-sided marketplace that connects drivers with nearby mechanics on demand. Think of it like Uber, but instead of rides, you're getting roadside or shop-based mechanical help, fast, transparent, and on your schedule.
 
-## Get started
+This prototype demonstrates the core flow for both sides of the marketplace: drivers requesting service and mechanics managing their availability, bookings, and earnings.
 
-1. Install dependencies
+## Demo
 
-   ```bash
-   npm install
-   ```
+### Driver Experience
 
-2. Start the app
+| Home | Profile |
+|------|---------|
+| ![Driver Home](README-images/Drivers-Home.png) | ![Driver Profile](README-images/Drivers-Profile.png) |
 
-   ```bash
-   npx expo start
-   ```
+### Mechanic Experience
 
-In the output, you'll find options to open the app in a
+| Bookings | Earnings |
+|----------|---------|
+| ![Mechanic Bookings](README-images/Mechanics-Bookings.png) | ![Mechanic Earnings](README-images/Mechanics-Earnings.png) |
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+| Messages | Profile |
+|----------|---------|
+| ![Mechanic Messages](README-images/Mechanics-Message.png) | ![Mechanic Profile](README-images/Mechanics-Profile.png) |
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## What REVO Does
 
-## Get a fresh project
+- **For Drivers:** Find and book a mechanic nearby, track job status, and manage your vehicle service history in one place.
+- **For Mechanics:** Accept jobs, manage your schedule, communicate with customers, and track your earnings, all from a mobile app.
+- **For the Market:** REVO sits in the middle, handling discovery, trust, and transactions so neither side has to.
 
-When you're ready, run:
+This is a super early prototype built to validate the concept and demonstrate the core user journeys before building out the full platform.
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18+)
+- [Expo Go](https://expo.dev/go) app on your phone, or an iOS/Android simulator
+
+### Install & Run
 
 ```bash
-npm run reset-project
+# Install dependencies
+npm install
+
+# Start the dev server
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Then scan the QR code with **Expo Go** on your phone, or press:
+- `i` to open in iOS Simulator
+- `a` to open in Android Emulator
 
-## Learn more
+### Switching User Roles
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+The app supports two roles, **Driver** and **Mechanic**. You can switch between them from the login/onboarding screen to explore both sides of the marketplace.
